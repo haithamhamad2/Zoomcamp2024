@@ -1,0 +1,104 @@
+select
+lpep_pickup_datetime,
+lpep_dropoff_datetime,
+"PULocationID",
+zp."Borough" Pickup_Borough,
+zp."Zone" Pickup_Zone,
+"DOLocationID",
+zd."Borough" Dropoff_Borough,
+zd."Zone" Dropoff_Zone,
+passenger_count,
+fare_amount,
+tip_amount,
+total_amount
+FROM
+green_taxi_data gtd,
+zones zp,
+zones zd
+where
+gtd."PULocationID"=zp."LocationID" and
+gtd."DOLocationID"=zd."LocationID"
+
+limit 5
+
+select dropoff_zone,tip_amount
+from (
+select
+lpep_pickup_datetime,
+lpep_dropoff_datetime,
+"PULocationID",
+zp."Borough" Pickup_Borough,
+zp."Zone" Pickup_Zone,
+"DOLocationID",
+zd."Borough" Dropoff_Borough,
+zd."Zone" Dropoff_Zone,
+passenger_count,
+fare_amount,
+tip_amount,
+total_amount
+FROM
+green_taxi_data gtd,
+zones zp,
+zones zd
+where
+gtd."PULocationID"=zp."LocationID" and
+gtd."DOLocationID"=zd."LocationID")a
+where tip_amount =
+(select max(tip_amount)
+from 
+green_taxi_data g,
+zones zpu
+where
+g."PULocationID"=zpu."LocationID" and
+to_char(lpep_pickup_datetime,'Mon-YYYY')='Sep-2019'
+and zpu."Zone"='Astoria'
+)
+
+select pickup_borough
+from (
+select
+lpep_pickup_datetime,
+lpep_dropoff_datetime,
+"PULocationID",
+zp."Borough" Pickup_Borough,
+zp."Zone" Pickup_Zone,
+"DOLocationID",
+zd."Borough" Dropoff_Borough,
+zd."Zone" Dropoff_Zone,
+passenger_count,
+fare_amount,
+tip_amount,
+total_amount
+FROM
+green_taxi_data gtd,
+zones zp,
+zones zd
+where
+gtd."PULocationID"=zp."LocationID" and
+gtd."DOLocationID"=zd."LocationID" and
+gtd.lpep_pickup_datetime::date = date '2019-09-18')
+
+select *
+from green_taxi_data
+where
+DATE(lpep_pickup_datetime) = '2019-09-18' and
+DATE(lpep_dropoff_datetime) = '2019-09-18'
+
+
+select date(lpep_pickup_datetime)
+from green_taxi_data
+where trip_distance=
+(
+select max(trip_distance)
+from green_taxi_data)
+
+
+select zp."Borough",sum(total_amount)
+FROM
+green_taxi_data gtd,
+zones zp
+where
+gtd."PULocationID"=zp."LocationID" and
+DATE(lpep_pickup_datetime) = '2019-09-18'
+group by zp."Borough"
+having sum(total_amount) > 50000
