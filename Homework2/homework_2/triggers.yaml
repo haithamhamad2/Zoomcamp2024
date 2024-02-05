@@ -2,7 +2,7 @@ triggers:
 - envs: []
   name: homework2_trigger
   pipeline_uuid: homework_2
-  schedule_interval: '@daily'
+  schedule_interval: 00 05 * * *
   schedule_type: time
   settings: {}
   sla: null
