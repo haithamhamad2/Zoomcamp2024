@@ -1,6 +1,8 @@
 version: 2
 
 models:
+  - name: fact_fhv_trips
+
   - name: dim_zones
     description: >
       List of unique zones idefied by locationid. 
