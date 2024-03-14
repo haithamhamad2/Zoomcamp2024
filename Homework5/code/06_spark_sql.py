@@ -24,13 +24,13 @@ spark = SparkSession.builder \
 
 
 #instead of local we will call the standalone port
-import pyspark
-from pyspark.sql import SparkSession
+# import pyspark
+# from pyspark.sql import SparkSession
 
-spark = SparkSession.builder \
-    .master("local[*]") \
-    .appName('test') \
-    .getOrCreate()
+# spark = SparkSession.builder \
+#     .master("local[*]") \
+#     .appName('test') \
+#     .getOrCreate()
 
 
 # In[6]:
